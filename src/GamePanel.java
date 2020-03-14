@@ -107,7 +107,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (e.getKeyCode()==KeyEvent.VK_UP) {
 		    if (currentState == GAME) {
-		    	if (rockship.x > 0) {
+		    	if (rockship.y > 0) {
 		    		System.out.println("UP, UP, and AWAY!");
 		    		rockship.up();
 		    	}
@@ -115,7 +115,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
 		    if (currentState == GAME) {
-		    	if (rockship.y < 800 - 70) {
+		    	if (rockship.y < 800 - 100) {
 		    		rockship.down();
 		    		System.out.println("DOWN, DOWN, and into the GROUND!");
 		    	}
@@ -123,7 +123,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 		    if (currentState == GAME) {
-		    	if (rockship.y > 0) {
+		    	if (rockship.x > 0) {
 		    		rockship.left();
 		    		System.out.println("I make a left turn here, right?");
 		    	}
@@ -131,7 +131,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 		    if (currentState == GAME) {
-		    	if (rockship.x < 500 - 50) {
+		    	if (rockship.x < 500 - 75) {
 		    		rockship.right();
 		    		System.out.println("Right, I think so...");
 		    	}
