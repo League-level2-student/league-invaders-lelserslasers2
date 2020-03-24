@@ -5,14 +5,36 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ObjectManager implements ActionListener {
+	
 	Rocketship rocketshipTwo;
 	
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Alien> aliens = new ArrayList<Alien>();
+	
 	Random random = new Random();
+	
+	int score;
 	
 	ObjectManager(Rocketship rocketshipTwo){
 		this.rocketshipTwo = rocketshipTwo;
+		score = 0;
+	}
+	
+	void checkCollision() {
+		for (int i = 0; i < aliens.size(); i++) {
+			for (int j = 0; j < projectiles.size(); j++) {
+				if (aliens.get(i).collisionBox.intersects(projectiles.get(j).collisionBox)) {
+					aliens.get(i).isActive = false;
+					projectiles.get(j).isActive = false;
+					score = score + 1;
+				}
+			}
+			if (aliens.get(i).collisionBox.intersects(rocketshipTwo.collisionBox)) {
+				aliens.get(i).isActive = false;
+				rocketshipTwo.isActive = false;
+				System.out.println("OOF! You've been Hit!");
+			}
+		}
 	}
 	
 	void addProjectile(Projectile p) {
@@ -59,6 +81,8 @@ public class ObjectManager implements ActionListener {
 				projectiles.get(i).isActive = false;
 			}
 		}
+		checkCollision();
+		purgeObjects();
 	}
 
 	@Override

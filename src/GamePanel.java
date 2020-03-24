@@ -12,12 +12,20 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	
 	final int MENU = 0;
 	final int GAME = 1;
 	final int END = 2;
 	int currentState = MENU;
+		
+	int spawnDelay = 10000;
+	
+	boolean moveUp = false;
+	boolean moveDown = false;
+	boolean moveLeft = false;
+	boolean moveRight = false;
 	
 	Font titleFont;
 	Font writtingFont;
@@ -39,7 +47,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 	
 	void startGame() {
-		alienSpawn = new Timer(1000 , objectManager);
+		alienSpawn = new Timer(spawnDelay , objectManager);
 	    alienSpawn.start();
 	}
 	
@@ -47,6 +55,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	
 	void updateGameState() { 
 		objectManager.update();
+		if (objectManager.rocketshipTwo.isActive == false) {
+			currentState = END;
+		}
 	}
 	
 	void updateEndState()  {  }
@@ -86,7 +97,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("GAME OVER", 100, 75);
 		
 		g.setFont(writtingFont);
-		g.drawString("You killed ? enemies" , 125, 325);
+		g.drawString("You killed " + objectManager.score + " enemies" , 125, 325);
 		g.drawString("Press ENTER to start", 125, 425);
 	}
 	
@@ -111,6 +122,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		    updateEndState();
 		}
 		repaint(); 
+		if (moveUp) {
+			rockship.up();
+		}
+		else if (moveDown) {
+			rockship.down();
+		}
+		else if (moveLeft) {
+			rockship.left();
+		}
+		else if (moveRight) {
+			rockship.right();
+		}
 		
 	}
 
@@ -129,6 +152,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		    } 
 		    if (currentState == MENU) {
 		    	currentState = GAME;
+		    	rockship = new Rocketship(250,700, 50, 50);
+		    	objectManager = new ObjectManager(rockship);
 		    	startGame();
 		    }
 		    else {
@@ -143,32 +168,36 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyCode()==KeyEvent.VK_UP) {
 		    if (currentState == GAME) {
 		    	if (rockship.y > 0) {
-		    		System.out.println("UP, UP, and AWAY!");
-		    		rockship.up();
+		    		//System.out.println("UP, UP, and AWAY!");
+		    		//rockship.up();
+		    		moveUp = true;
 		    	}
 		    }
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
 		    if (currentState == GAME) {
 		    	if (rockship.y < 800 - 100) {
-		    		rockship.down();
-		    		System.out.println("DOWN, DOWN, and into the GROUND!");
+		    		//rockship.down();
+		    		//System.out.println("DOWN, DOWN, and into the GROUND!");
+		    		moveDown = true;
 		    	}
 		    }
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 		    if (currentState == GAME) {
 		    	if (rockship.x > 0) {
-		    		rockship.left();
-		    		System.out.println("I make a left turn here, right?");
+		    		//rockship.left();
+		    		//System.out.println("I make a left turn here, right?");
+		    		moveLeft = true;
 		    	}
 		    }
 		}
 		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 		    if (currentState == GAME) {
 		    	if (rockship.x < 500 - 75) {
-		    		rockship.right();
-		    		System.out.println("Right, I think so...");
+		    		//rockship.right();
+		    		//System.out.println("Right, I think so...");
+		    		moveRight = true;
 		    	}
 		    }
 		}
@@ -177,6 +206,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		moveUp = false;
+		moveDown = false;
+		moveLeft = false;
+		moveRight = false;
 		
 	}
 }
